@@ -11,7 +11,7 @@ export default function Contact() {
   };
 
   return (
-    <div id="contact">
+    <div className="flex bg-gray-100 min-h-screen flex-col items-center">
       <div>
         <img
           key={contact.avatar}

@@ -1,6 +1,8 @@
 import { Form } from "react-router-dom";
+import useContacts from "../hooks/useContacts";
 
 export default function Root() {
+  const contactsStore = useContacts()
   return (
     <>
       <div className="bg-gray-100 min-h-screen flex flex-col items-center">
@@ -9,50 +11,29 @@ export default function Root() {
           <thead>
             <tr>
               <th>
-                a
+                Name
               </th>
               <th>
-                b
+                Gender
               </th>
               <th>
-                c
+                Country
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            {contactsStore.contacts.map(contact => <tr key={contact.id}>
               <th>
-                a
+                {`${contact.firstName} ${contact.lastName}`}
               </th>
               <th>
-                b
+                {`${contact.gender}`}
               </th>
               <th>
-                c
-              </th>
-            </tr>
-            <tr>
-              <th>
-                a
-              </th>
-              <th>
-                b
-              </th>
-              <th>
-                c
+                {`${contact.country}`}
               </th>
             </tr>
-            <tr>
-              <th>
-                a
-              </th>
-              <th>
-                b
-              </th>
-              <th>
-                c
-              </th>
-            </tr>
+            )}
           </tbody>
         </table>
       </div>

@@ -1,7 +1,6 @@
 import create from 'zustand'
-
-interface contactType {
-  id: string;
+import { v4 as uuidv4 } from 'uuid'; 'uuid'
+export interface newContactType {
   firstName: string;
   lastName: string;
   age: number;
@@ -14,16 +13,24 @@ interface contactType {
   workType?: "Part time" | "Full time" | "Freelance";
   description: string;
 }
+export interface savedContactType extends newContactType {
+  id: string;
+}
 
 interface contactsState {
-  contacts: contactType[];
-  addContact: (contact: contactType) => void;
+  contacts: savedContactType[];
+  addContact: (contact: newContactType) => void;
   removeContact: (contactId: string) => void;
 }
 
 const useContacts = create<contactsState>((set) => ({
   contacts: [],
-  addContact: (contact: contactType) => set((state) => ({ contacts: [...state.contacts, contact] })),
+  addContact: (contact: newContactType) => set((state) => ({
+    contacts: [
+      ...state.contacts,
+      { id: uuidv4(), ...contact }
+    ]
+  })),
   removeContact: (contactId: string) => set((state) => ({ contacts: state.contacts.filter(c => c.id !== contactId) })),
 }))
 

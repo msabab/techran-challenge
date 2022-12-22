@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ErrorPage from './error-page'
 import './index.css'
 import Contact from './routes/contact'
+import New from './routes/new'
 import Root from './routes/root'
 
 const router = createBrowserRouter([
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
   },
   {
     path: "new",
-    element: <Contact />,
+    element: <New />,
   },
 ])
 

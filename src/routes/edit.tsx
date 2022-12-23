@@ -56,12 +56,15 @@ const Edit = () => {
 
   const contactFormik = useFormik({
     enableReinitialize: true,
-    initialValues: data || {
+    initialValues: data && {
+      ...data,
+      birthdate: data.birthdate instanceof Date ? data.birthdate : new Date(data.birthdate)
+    } || {
       firstName: "",
       lastName: "",
       age: 18,
       gender: "Male",
-      birthdate: moment(),
+      birthdate: new Date(),
       country: "US",
       city: "New York",
       jobTitle: "Frontend Developer",
@@ -78,9 +81,8 @@ const Edit = () => {
   })
   return (
     <div>
-      <form className='flex flex-col max-w-md px-4 py-8 gap-4' onSubmit={contactFormik.handleSubmit}>
+      <form className='flex flex-col max-w-md p-8 gap-4' onSubmit={contactFormik.handleSubmit}>
         <TextField
-
           id="firstName"
           name="firstName"
           label="First Name"
@@ -90,7 +92,6 @@ const Edit = () => {
           helperText={contactFormik.touched.firstName && contactFormik.errors.firstName}
         />
         <TextField
-
           id="lastName"
           name="lastName"
           label="Last Name"
@@ -100,7 +101,6 @@ const Edit = () => {
           helperText={contactFormik.touched.lastName && contactFormik.errors.lastName}
         />
         <TextField
-
           id="age"
           name="age"
           label="Age"
@@ -130,7 +130,8 @@ const Edit = () => {
             value={contactFormik.values.birthdate}
             onChange={(e) => {
               if (e) {
-                contactFormik.setFieldValue('birthdate', e)
+                const d = new Date(e.toISOString())
+                contactFormik.setFieldValue('birthdate', d)
               }
             }
             }

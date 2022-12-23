@@ -66,7 +66,7 @@ const ViewContact = () => {
           id="birthdate"
           name="birthdate"
           label="Birth Date"
-          value={contactData.birthdate.format("YYYY-MM-DD")}
+          value={(contactData.birthdate instanceof Date) ? contactData.birthdate.toISOString().split('T')[0] : contactData.birthdate.split('T')[0]}
 
         />
 
@@ -95,7 +95,6 @@ const ViewContact = () => {
             name="city"
             value={contactData.city}
             label="City"
-
           >
             <MenuItem value={"New York"}>New York</MenuItem>
             <MenuItem value={"London"}>London</MenuItem>
@@ -136,7 +135,6 @@ const ViewContact = () => {
             name="workType"
             value={contactData.workType}
             label="WorkType"
-
           >
             <MenuItem value={"Part Time"}>Part Time</MenuItem>
             <MenuItem value={"Full Time"}>Full Time</MenuItem>

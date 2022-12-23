@@ -51,7 +51,7 @@ const New = () => {
       lastName: "",
       age: 18,
       gender: "Male",
-      birthdate: moment(),
+      birthdate: new Date(),
       country: "US",
       city: "New York",
       jobTitle: "Frontend Developer",
@@ -121,7 +121,8 @@ const New = () => {
               value={contactFormik.values.birthdate}
               onChange={(e) => {
                 if (e) {
-                  contactFormik.setFieldValue('birthdate', e)
+                  const d = new Date(e.toISOString())
+                  contactFormik.setFieldValue('birthdate', d)
                 }
               }
               }

@@ -42,36 +42,42 @@ export default function Root() {
     return () => removeContact(contactId)
   }
 
-
   return (
     <>
-      <div className="bg-gray-100 min-h-screen flex flex-col items-center">
-        <h1 className="text-3xl">Contacts</h1>
-        <div className="flex">
-          <TextField
-            id="name"
-            name="name"
-            label="Search in name"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <FormControl >
-            <InputLabel id="WorkTypeLabel">WorkType</InputLabel>
-            <Select
-              labelId="WorkTypeLabel"
-              id="WorkType"
-              name="workType"
-              className="w-56"
-              value={workTypeFilter}
-              label="WorkType"
-              onChange={(e) => setWorkTypeFilter(e.target.value)}
-            >
-              <MenuItem value={"Part Time"}>Part Time</MenuItem>
-              <MenuItem value={"Full Time"}>Full Time</MenuItem>
-              <MenuItem value={"Freelance"}>Freelance</MenuItem>
-              <MenuItem value={""}>None</MenuItem>
-            </Select>
-          </FormControl>
+      <div className="bg-gray-100 min-h-screen flex flex-col items-center p-8">
+        <h1 className="text-3xl mb-8">Contacts</h1>
+        <div className="flex justify-between w-full mb-4">
+          <div className="flex gap-4">
+            <TextField
+              id="name"
+              name="name"
+              label="Search in name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <FormControl >
+              <InputLabel id="WorkTypeLabel">WorkType</InputLabel>
+              <Select
+                labelId="WorkTypeLabel"
+                id="WorkType"
+                name="workType"
+                className="w-56"
+                value={workTypeFilter}
+                label="WorkType"
+                onChange={(e) => setWorkTypeFilter(e.target.value)}
+              >
+                <MenuItem value={"Part Time"}>Part Time</MenuItem>
+                <MenuItem value={"Full Time"}>Full Time</MenuItem>
+                <MenuItem value={"Freelance"}>Freelance</MenuItem>
+                <MenuItem value={""}>None</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <Link to="/new" >
+            <Button>
+              New
+            </Button>
+          </Link>
         </div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -103,7 +109,7 @@ export default function Root() {
                   <TableCell>{contact.lastName}</TableCell>
                   <TableCell>{contact.age}</TableCell>
                   <TableCell>{contact.gender}</TableCell>
-                  <TableCell>{contact.birthdate.toISOString().split('T')[0]}</TableCell>
+                  <TableCell>{(contact.birthdate instanceof Date) ? contact.birthdate.toISOString().split('T')[0] : contact.birthdate.split('T')[0]}</TableCell>
                   <TableCell>{contact.country}</TableCell>
                   <TableCell>{contact.city}</TableCell>
                   <TableCell>{contact.jobTitle}</TableCell>
@@ -124,11 +130,7 @@ export default function Root() {
             </TableBody>
           </Table>
         </TableContainer>
-        <Link to="/new" >
-          <Button>
-            New
-          </Button>
-        </Link>
+
       </div>
     </>
   );

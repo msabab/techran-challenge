@@ -1,16 +1,18 @@
 import create from 'zustand'
-import { v4 as uuidv4 } from 'uuid'; 'uuid'
+import { v4 as uuidv4 } from 'uuid';
+import { Moment } from 'moment';
+
 export interface newContactType {
   firstName: string;
   lastName: string;
   age: number;
   gender: "Male" | "Female";
-  birthdate: Date;
+  birthdate: Moment;
   country: "US" | "UK" | "Iran" | "China" | "Canada";
   city: "New York" | "London" | "Tehran" | "Beijing" | "Vancouver";
   jobTitle: "Frontend Developer" | "Backend Developer" | "DevOps" | "Software Engineer" | "UI Designer";
   phoneNumber: string;
-  workType?: "Part time" | "Full time" | "Freelance";
+  workType: "Part time" | "Full time" | "Freelance" | "";
   description: string;
 }
 export interface savedContactType extends newContactType {

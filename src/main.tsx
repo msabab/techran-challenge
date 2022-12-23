@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ErrorPage from './error-page'
 import './index.css'
-import Contact from './routes/contact'
+import ViewContact from './routes/viewContact'
+import Edit from './routes/edit'
 import New from './routes/new'
 import Root from './routes/root'
 
@@ -14,12 +15,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "view/:contactId",
-    element: <Contact />,
+    path: "contacts/:contactId",
+    element: <ViewContact />,
   },
   {
-    path: "edit/:contactId",
-    element: <Contact />,
+    path: "contacts/:contactId/edit",
+    element: <Edit />,
   },
   {
     path: "new",

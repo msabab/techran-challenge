@@ -11,7 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment'
-import { Link } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
 const FormValidationSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -26,7 +26,7 @@ const FormValidationSchema = Yup.object().shape({
   gender: Yup.string()
     .required('Specify Gender'),
   birthdate: Yup.date()
-    .required("Must be selected"),
+    .required(),
   country: Yup.string()
     .required('Required'),
   city: Yup.string()
@@ -41,12 +41,22 @@ const FormValidationSchema = Yup.object().shape({
     .required('Required'),
 });
 
-const New = () => {
-  const addContact = useContacts(state => state.addContact)
+const Edit = () => {
+  const params = useParams()
   const navigate = useNavigate()
+  const contacts = useContacts(state => state.contacts)
+  const data = contacts.find(c => c.id === params.contactId)
+  const editContact = useContacts(state => state.editContact)
+
+  if (!data) {
+    return <>
+      Loading
+    </>
+  }
 
   const contactFormik = useFormik({
-    initialValues: {
+    enableReinitialize: true,
+    initialValues: data || {
       firstName: "",
       lastName: "",
       age: 18,
@@ -62,7 +72,7 @@ const New = () => {
     validationSchema: FormValidationSchema,
     validateOnChange: true,
     onSubmit: (values) => {
-      addContact(values)
+      editContact(data?.id, values)
       navigate("/")
     }
   })
@@ -113,25 +123,20 @@ const New = () => {
             <FormControlLabel value="Male" control={<Radio />} label="Male" />
           </RadioGroup>
         </FormControl>
-        <div>
-          <LocalizationProvider dateAdapter={AdapterMoment}>
-            <DesktopDatePicker
-              label="Birth Date"
-              inputFormat="MM/DD/YYYY"
-              value={contactFormik.values.birthdate}
-              onChange={(e) => {
-                if (e) {
-                  contactFormik.setFieldValue('birthdate', e)
-                }
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <DesktopDatePicker
+            label="Birth Date"
+            inputFormat="MM/DD/YYYY"
+            value={contactFormik.values.birthdate}
+            onChange={(e) => {
+              if (e) {
+                contactFormik.setFieldValue('birthdate', e)
               }
-              }
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
-          <h6>
-            {contactFormik.touched.birthdate && Boolean(contactFormik.errors.birthdate) && "Must be selected"}
-          </h6>
-        </div>
+            }
+            }
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
         <FormControl >
           <InputLabel id="CountryLabel">County</InputLabel>
           <Select
@@ -141,7 +146,6 @@ const New = () => {
             value={contactFormik.values.country}
             label="Country"
             onChange={contactFormik.handleChange}
-            error={contactFormik.touched.country && Boolean(contactFormik.errors.country)}
           >
             <MenuItem value={"US"}>US</MenuItem>
             <MenuItem value={"UK"}>UK</MenuItem>
@@ -159,7 +163,6 @@ const New = () => {
             value={contactFormik.values.city}
             label="City"
             onChange={contactFormik.handleChange}
-            error={contactFormik.touched.city && Boolean(contactFormik.errors.city)}
           >
             <MenuItem value={"New York"}>New York</MenuItem>
             <MenuItem value={"London"}>London</MenuItem>
@@ -176,7 +179,6 @@ const New = () => {
             name="jobTitle"
             value={contactFormik.values.jobTitle}
             label="JobTitle"
-            error={contactFormik.touched.jobTitle && Boolean(contactFormik.errors.jobTitle)}
             onChange={contactFormik.handleChange}
           >
             <MenuItem value={"Frontend Developer"}>Frontend Developer</MenuItem>
@@ -224,14 +226,12 @@ const New = () => {
           multiline={true}
         />
 
-        <Button variant="contained" type='submit'>Submit</Button>
-        <Link to="/">
-          <Button variant="contained" type='submit'>Cancel</Button>
-        </Link>
+        <Button variant="contained" type='submit'>Save</Button>
+        <Button variant="contained" type='reset'>Reset</Button>
       </form>
 
     </div>
   )
 }
 
-export default New
+export default Edit

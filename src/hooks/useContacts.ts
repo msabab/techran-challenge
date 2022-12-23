@@ -23,6 +23,7 @@ interface contactsState {
   contacts: savedContactType[];
   addContact: (contact: newContactType) => void;
   removeContact: (contactId: string) => void;
+  editContact: (contactId: string, updatedContact: newContactType) => void;
 }
 
 const useContacts = create<contactsState>((set) => ({
@@ -33,7 +34,18 @@ const useContacts = create<contactsState>((set) => ({
       { id: uuidv4(), ...contact }
     ]
   })),
-  removeContact: (contactId: string) => set((state) => ({ contacts: state.contacts.filter(c => c.id !== contactId) })),
+  removeContact: (contactId: string) => set((state) => ({
+    contacts: state.contacts.filter(c => c.id !== contactId)
+  })),
+  editContact: (contactId: string, updatedContact: newContactType) => set((state) => ({
+    contacts: [
+      ...state.contacts.filter(c => c.id !== contactId),
+      {
+        id: contactId,
+        ...updatedContact
+      }
+    ]
+  }))
 }))
 
 export default useContacts;

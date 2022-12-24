@@ -1,4 +1,4 @@
-# Foobar
+# Techran Challenge
 
 This project was created using React as a challenge
 
